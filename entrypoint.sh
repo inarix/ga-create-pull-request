@@ -46,5 +46,4 @@ then
 fi
 
 echo "::set-output name=pullNumber::$(echo $PULL_REQUEST | jq -r .number)"
-
 exit 0
