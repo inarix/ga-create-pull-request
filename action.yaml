@@ -6,6 +6,9 @@
 name: 'ga-create-pull-request'
 description: 'Create a pullRequest'
 inputs:
+  title:
+    description: 'title of the pull request'
+    required: true
   repo:
     description: 'name of the repository'
     required: true
