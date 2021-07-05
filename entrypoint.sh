@@ -34,17 +34,18 @@ fi
 echo "[$(date +"%m/%d/%y %T")] Called with repo=$REPO_NAME head=$SOURCE dest=$DEST title=$TITLE"
 
 PULL_REQUEST=$(curl --silent --fail-with-body -L -X POST "https://api.github.com/repos/$REPO_NAME/pulls" -H "Authorization: Bearer $GITHUB_TOKEN" -H "Content-Type: application/json" --data-raw "{\"title\":\"$TITLE\", \"head\": \"$SOURCE\", \"base\": \"$DEST\"}")
-echo "RESULT=$PULL_REQUEST"
+PR_NUMBER=$(echo $PULL_REQUEST | jq -r .number)
 
-if [[ -n $(echo $PULL_REQUEST | jq -r .message) ]]
-then
-  echo "[$(date +"%m/%d/%y %T")] An error occured during creation of PullRequest (reason: $(echo $PULL_REQUEST | jq -r .message))"
-  exit 1
-elif [[ -z $(echo $PULL_REQUEST | jq -r .number) ]]
+echo "::group::debug"
+echo "$(echo $PULL_REQUEST | jq)"
+echo "::endgroup::"
+
+if [[ -z $PR_NUMBER || $PR_NUMBER == "" ]]
 then
   echo "[$(date +"%m/%d/%y %T")] An error occured during creation of PullRequest (missing number value in response)"
   exit 1
 fi
 
-echo "::set-output name=pullNumber::$(echo $PULL_REQUEST | jq -r .number)"
+echo "Created pull request number is $PR_NUMBER"
+echo "::set-output name=pullNumber::$PR_NUMBER"
 exit 0
