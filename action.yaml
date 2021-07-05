@@ -7,16 +7,15 @@ name: 'ga-create-pull-request'
 description: 'Create a pullRequest'
 inputs:
   repo:
-    description: 'generated modelInstanceId given by previous registerModel in bookish-happiness'
+    description: 'name of the repository'
     required: true
   base:
-    description: 'Host of the Argo server to trigger the worflow'
+    description: 'Destination branch to create pull request'
     required: false
-    default: 'argo.inarix.com'
+    default: 'master'
   head:
-    description: 'Name of the Argo Workflow template to run'
-    required: false
-    default: 'workflowtemplate/wt-model-deploy-non-regression'
+    description: 'Source branch to create pull request'
+    required: true
 outputs:
   pullNumber: # id of output
     description: 'Created PullRequest number identifier'
